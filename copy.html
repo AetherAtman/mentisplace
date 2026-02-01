@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 Copy Blocks - Aether</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --card: #12121a;
+            --border: #2a2a3a;
+            --accent: #a855f7;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --success: #22c55e;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        
+        .block {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(168, 85, 247, 0.1);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .block-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .block-meta {
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .badge-new {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .badge-older {
+            background: rgba(100, 116, 139, 0.2);
+            color: #94a3b8;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        
+        .section-divider {
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-divider::before {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        
+        .batch-group {
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(168, 85, 247, 0.05);
+        }
+        
+        .batch-group .block {
+            margin-bottom: 0.75rem;
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+        
+        .batch-group .block:last-child {
+            margin-bottom: 0;
+        }
+        
+        .batch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        }
+        
+        .batch-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+        
+        .batch-meta {
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+        
+        /* Different colors for different batches */
+        .batch-group[data-color="cyan"] {
+            border-color: #22d3ee;
+            background: rgba(34, 211, 238, 0.05);
+        }
+        .batch-group[data-color="cyan"] .batch-title { color: #22d3ee; }
+        .batch-group[data-color="cyan"] .block { border-color: rgba(34, 211, 238, 0.3); }
+        
+        .batch-group[data-color="green"] {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+        }
+        .batch-group[data-color="green"] .batch-title { color: #22c55e; }
+        .batch-group[data-color="green"] .block { border-color: rgba(34, 197, 94, 0.3); }
+        
+        .batch-group[data-color="amber"] {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.05);
+        }
+        .batch-group[data-color="amber"] .batch-title { color: #f59e0b; }
+        .batch-group[data-color="amber"] .block { border-color: rgba(245, 158, 11, 0.3); }
+        
+        .block-content {
+            position: relative;
+        }
+        
+        pre {
+            margin: 0;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre;
+            background: transparent;
+        }
+        
+        .btn-group {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .copy-btn, .run-btn {
+            padding: 0.4rem 0.75rem;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn {
+            background: var(--accent);
+        }
+        
+        .copy-btn:hover {
+            background: #9333ea;
+        }
+        
+        .copy-btn.copied {
+            background: var(--success);
+        }
+        
+        .run-btn {
+            background: #0891b2;
+        }
+        
+        .run-btn:hover {
+            background: #0e7490;
+        }
+        
+        .run-btn.running {
+            background: #f59e0b;
+            cursor: wait;
+        }
+        
+        .run-btn.success {
+            background: var(--success);
+        }
+        
+        .run-btn.error {
+            background: #ef4444;
+        }
+        
+        .note {
+            font-size: 0.75rem;
+            color: var(--muted);
+            padding: 0.5rem 1rem;
+            border-top: 1px solid var(--border);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📋 Copy Blocks</h1>
+        <a href="/" class="back-link">← Back to Dashboard</a>
+    </header>
+    
+    <div id="blocks"></div>
+    
+    <script>
+        // Batches - groups of related blocks pushed together
+        const batches = [
+            {
+                id: 'ane-newsletter',
+                title: '📰 ANE Newsletter Schema',
+                added: '2026-01-30T11:30:00Z',
+                color: 'blue',
+                blocks: [
+                    {
+                        id: 'ane-schema',
+                        title: 'Create ANE Tables',
+                        note: 'Run this in the ANE Neon database to set up tables',
+                        content: `-- ANE Newsletter System Schema
+
+-- Submissions table
+CREATE TABLE IF NOT EXISTS submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  subject TEXT NOT NULL,
+  content_richtext TEXT NOT NULL,
+  image_url TEXT,
+  month INTEGER NOT NULL CHECK (month >= 1 AND month <= 12),
+  year INTEGER NOT NULL CHECK (year >= 2024 AND year <= 2100),
+  status TEXT DEFAULT 'submitted' CHECK (status IN ('submitted', 'published')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Newsletters table
+CREATE TABLE IF NOT EXISTS newsletters (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  month INTEGER NOT NULL CHECK (month >= 1 AND month <= 12),
+  year INTEGER NOT NULL CHECK (year >= 2024 AND year <= 2100),
+  published_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(month, year)
+);
+
+-- Newsletter articles join table
+CREATE TABLE IF NOT EXISTS newsletter_articles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  newsletter_id UUID NOT NULL REFERENCES newsletters(id) ON DELETE CASCADE,
+  submission_id UUID NOT NULL REFERENCES submissions(id) ON DELETE CASCADE,
+  display_order INTEGER DEFAULT 0,
+  UNIQUE(newsletter_id, submission_id)
+);
+
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_submissions_month_year ON submissions(year, month);
+CREATE INDEX IF NOT EXISTS idx_submissions_status ON submissions(status);
+CREATE INDEX IF NOT EXISTS idx_newsletters_month_year ON newsletters(year DESC, month DESC);`
+                    }
+                ]
+            },
+            {
+                id: 'reset-db',
+                title: '🗑️ Reset Database (Clean Slate)',
+                added: '2026-01-30T06:32:00Z',
+                color: 'amber',
+                blocks: [
+                    {
+                        id: 'truncate-all',
+                        title: 'Clear All Data',
+                        note: '⚠️ This deletes ALL users and votes permanently!',
+                        content: `-- Clear all votes first (foreign key)
+TRUNCATE TABLE votes RESTART IDENTITY CASCADE;
+
+-- Clear all users
+TRUNCATE TABLE users RESTART IDENTITY CASCADE;
+
+-- Clear rate limits
+TRUNCATE TABLE rate_limits;
+
+-- Verify clean slate
+SELECT 'users' as table_name, COUNT(*) as count FROM users
+UNION ALL
+SELECT 'votes', COUNT(*) FROM votes;`
+                    }
+                ]
+            },
+            {
+                id: 'user-voting-system',
+                title: '👤 User Registration + Voting System',
+                added: '2026-01-30T04:47:00Z',
+                color: 'cyan',
+                blocks: [
+                    {
+                        id: 'sql-users',
+                        title: '1. Users Table',
+                        note: 'Username AND email must both be unique',
+                        content: `CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    has_voted BOOLEAN DEFAULT FALSE,
+    vote_count INTEGER DEFAULT 0
+);
+
+CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_users_email ON users(email);`
+                    },
+                    {
+                        id: 'sql-votes-v2',
+                        title: '2. Update Votes Table',
+                        note: 'Adds user_id reference (run after creating users table)',
+                        content: `-- Add user_id column to existing votes table
+ALTER TABLE votes ADD COLUMN user_id INTEGER REFERENCES users(id);
+
+-- Update unique constraint (user can only vote once per image)
+ALTER TABLE votes DROP CONSTRAINT IF EXISTS votes_image_name_ip_address_key;
+ALTER TABLE votes ADD CONSTRAINT votes_user_image_unique UNIQUE(image_name, user_id);
+
+-- Index for user lookups
+CREATE INDEX idx_votes_user ON votes(user_id);`
+                    },
+                    {
+                        id: 'sql-tallies-v2',
+                        title: '3. Updated Tallies View',
+                        note: 'Replaces old view with user count',
+                        content: `DROP VIEW IF EXISTS vote_tallies;
+
+CREATE VIEW vote_tallies AS
+SELECT 
+    image_name,
+    COUNT(*) FILTER (WHERE vote_type = 'approved') as approved_count,
+    COUNT(*) FILTER (WHERE vote_type = 'maybe') as maybe_count,
+    COUNT(*) FILTER (WHERE vote_type = 'rejected') as rejected_count,
+    ROUND(AVG(rating) FILTER (WHERE rating > 0), 1) as avg_rating,
+    COUNT(DISTINCT user_id) as unique_voters,
+    COUNT(*) as total_votes
+FROM votes
+WHERE user_id IS NOT NULL
+GROUP BY image_name;`
+                    }
+                ]
+            },
+            {
+                id: 'initial-voting-setup',
+                title: '🗳️ Initial Voting Setup (Original)',
+                added: '2026-01-30T04:27:00Z',
+                color: 'green',
+                blocks: [
+                    {
+                        id: 'sql-votes',
+                        title: '1. Votes Table',
+                        note: 'For atmanacademy Neon DB - image voting',
+                        content: `CREATE TABLE votes (
+    id SERIAL PRIMARY KEY,
+    image_name VARCHAR(255) NOT NULL,
+    vote_type VARCHAR(20) NOT NULL CHECK (vote_type IN ('approved', 'maybe', 'rejected')),
+    rating INTEGER CHECK (rating >= 0 AND rating <= 5),
+    ip_address VARCHAR(45) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(image_name, ip_address)
+);`
+                    },
+                    {
+                        id: 'sql-indexes',
+                        title: '2. Indexes',
+                        note: 'Run after creating votes table',
+                        content: `CREATE INDEX idx_votes_image ON votes(image_name);
+CREATE INDEX idx_votes_ip ON votes(ip_address);`
+                    },
+                    {
+                        id: 'sql-rate-limits',
+                        title: '3. Rate Limits Table',
+                        note: 'For flood protection',
+                        content: `CREATE TABLE rate_limits (
+    ip_address VARCHAR(45) PRIMARY KEY,
+    request_count INTEGER DEFAULT 1,
+    window_start TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);`
+                    },
+                    {
+                        id: 'sql-tallies',
+                        title: '4. Vote Tallies View',
+                        note: 'Aggregates votes per image',
+                        content: `CREATE VIEW vote_tallies AS
+SELECT 
+    image_name,
+    COUNT(*) FILTER (WHERE vote_type = 'approved') as approved_count,
+    COUNT(*) FILTER (WHERE vote_type = 'maybe') as maybe_count,
+    COUNT(*) FILTER (WHERE vote_type = 'rejected') as rejected_count,
+    ROUND(AVG(rating) FILTER (WHERE rating > 0), 1) as avg_rating,
+    COUNT(*) as total_votes
+FROM votes
+GROUP BY image_name;`
+                    }
+                ]
+            }
+        ];
+        
+        function formatDate(ts) {
+            const d = new Date(ts);
+            return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+        }
+        
+        function isNew(dateStr) {
+            const added = new Date(dateStr);
+            const now = new Date();
+            const hoursDiff = (now - added) / (1000 * 60 * 60);
+            return hoursDiff < 24;
+        }
+        
+        function renderBlocks() {
+            const container = document.getElementById('blocks');
+            
+            // Separate new vs older batches
+            const newBatches = batches.filter(b => isNew(b.added));
+            const olderBatches = batches.filter(b => !isNew(b.added));
+            
+            let html = '';
+            
+            if (newBatches.length > 0) {
+                html += `<div class="section-divider">🆕 New (last 24h)</div>`;
+                html += newBatches.map(batch => renderBatch(batch)).join('');
+            }
+            
+            if (olderBatches.length > 0) {
+                html += `<div class="section-divider">📁 Older</div>`;
+                html += olderBatches.map(batch => renderBatch(batch)).join('');
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function renderBatch(batch) {
+            const blocksHtml = batch.blocks.map(block => renderBlock(block, batch.id)).join('');
+            
+            return `
+                <div class="batch-group" data-color="${batch.color || 'purple'}">
+                    <div class="batch-header">
+                        <span class="batch-title">${batch.title}</span>
+                        <span class="batch-meta">${formatDate(batch.added)} · ${batch.blocks.length} blocks</span>
+                    </div>
+                    ${blocksHtml}
+                </div>
+            `;
+        }
+        
+        function renderBlock(block, batchId) {
+            return `
+                <div class="block">
+                    <div class="block-header">
+                        <span class="block-title">${block.title}</span>
+                    </div>
+                    <div class="block-content">
+                        <div class="btn-group">
+                            <button class="copy-btn" onclick="copyBlock('${block.id}', this)">Copy</button>
+                            <button class="run-btn" onclick="runBlock('${block.id}', this)">▶ Run</button>
+                        </div>
+                        <pre id="code-${block.id}">${escapeHtml(block.content)}</pre>
+                    </div>
+                    ${block.note ? `<div class="note">💡 ${block.note}</div>` : ''}
+                    <div class="run-result" id="result-${block.id}" style="display: none; padding: 0.5rem 1rem; font-size: 0.75rem; border-top: 1px solid var(--border);"></div>
+                </div>
+            `;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function copyBlock(id, btn) {
+            // Find block in any batch
+            let block = null;
+            for (const batch of batches) {
+                block = batch.blocks.find(b => b.id === id);
+                if (block) break;
+            }
+            if (!block) return;
+            
+            navigator.clipboard.writeText(block.content).then(() => {
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        const SQL_API = 'https://atmanacademy.vercel.app/api/sql';
+        
+        async function runBlock(id, btn) {
+            // Find block in any batch
+            let block = null;
+            for (const batch of batches) {
+                block = batch.blocks.find(b => b.id === id);
+                if (block) break;
+            }
+            if (!block) return;
+            
+            const sql = block.content;
+            const isDestructive = /truncate|drop|delete/i.test(sql);
+            
+            // Confirm destructive operations
+            if (isDestructive) {
+                const confirmed = confirm('⚠️ This will DELETE data permanently!\\n\\nAre you sure you want to run this?');
+                if (!confirmed) return;
+            }
+            
+            btn.textContent = '⏳ Running...';
+            btn.classList.add('running');
+            btn.disabled = true;
+            
+            const resultEl = document.getElementById(`result-${id}`);
+            resultEl.style.display = 'block';
+            resultEl.innerHTML = 'Executing...';
+            
+            try {
+                const res = await fetch(SQL_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        sql, 
+                        confirm: isDestructive ? 'yes-delete-data' : undefined 
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    btn.textContent = '✓ Done!';
+                    btn.classList.remove('running');
+                    btn.classList.add('success');
+                    
+                    let resultHtml = '<span style="color: #22c55e;">✅ ' + data.message + '</span><br>';
+                    data.results.forEach(r => {
+                        if (r.success && r.rows && r.rows.length > 0) {
+                            resultHtml += '<pre style="margin: 0.25rem 0; font-size: 0.7rem;">' + JSON.stringify(r.rows, null, 2) + '</pre>';
+                        }
+                    });
+                    resultEl.innerHTML = resultHtml;
+                } else {
+                    btn.textContent = '✗ Failed';
+                    btn.classList.remove('running');
+                    btn.classList.add('error');
+                    
+                    let errorHtml = '<span style="color: #ef4444;">❌ ' + (data.message || data.error) + '</span><br>';
+                    if (data.results) {
+                        data.results.filter(r => !r.success).forEach(r => {
+                            errorHtml += '<span style="color: #f59e0b;">' + r.error + '</span><br>';
+                        });
+                    }
+                    resultEl.innerHTML = errorHtml;
+                }
+            } catch (e) {
+                btn.textContent = '✗ Error';
+                btn.classList.remove('running');
+                btn.classList.add('error');
+                resultEl.innerHTML = '<span style="color: #ef4444;">❌ ' + e.message + '</span>';
+            }
+            
+            setTimeout(() => {
+                btn.textContent = '▶ Run';
+                btn.classList.remove('success', 'error');
+                btn.disabled = false;
+            }, 3000);
+        }
+        
+        renderBlocks();
+    </script>
+</body>
+</html>
