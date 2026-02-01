@@ -399,7 +399,7 @@
         setStatus('Connecting to OpenAI...');
         
         // Send SDP to our server (unified interface)
-        const response = await fetch('https://outdoor-class-none-functions.trycloudflare.com/api/session', {
+        const response = await fetch('https://genuine-palestinian-beautifully-areas.trycloudflare.com/api/session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/sdp' },
           body: peerConnection.localDescription.sdp
@@ -478,7 +478,7 @@
             // Route to Clawdbot
             setStatus('Thinking...');
             try {
-              const res = await fetch('https://outdoor-class-none-functions.trycloudflare.com/api/chat', {
+              const res = await fetch('https://genuine-palestinian-beautifully-areas.trycloudflare.com/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ transcript, model: modelSelect.value })
@@ -703,7 +703,7 @@
       addTranscript('Analyzing what I see...', 'assistant');
       
       try {
-        const res = await fetch('https://outdoor-class-none-functions.trycloudflare.com/api/screenshot', {
+        const res = await fetch('https://genuine-palestinian-beautifully-areas.trycloudflare.com/api/screenshot', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ image: imageData, model: modelSelect.value })
@@ -783,7 +783,7 @@
         addTranscript('Analyzing your image...', 'assistant');
         
         try {
-          const res = await fetch('https://outdoor-class-none-functions.trycloudflare.com/api/screenshot', {
+          const res = await fetch('https://genuine-palestinian-beautifully-areas.trycloudflare.com/api/screenshot', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ image: lastScreenCapture, model: modelSelect.value })
