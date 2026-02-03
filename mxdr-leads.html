@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ MXDR Lead Dashboard</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --card: #12121a;
+            --border: #2a2a3a;
+            --accent: #00a3e0;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --hot: #ef4444;
+            --warm: #f59e0b;
+            --cold: #3b82f6;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+        
+        .stat.hot .stat-value { color: var(--hot); }
+        .stat.warm .stat-value { color: var(--warm); }
+        .stat.new .stat-value { color: var(--accent); }
+        
+        .filters {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--accent);
+            background: rgba(0, 163, 224, 0.1);
+        }
+        
+        .leads-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .lead-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            align-items: start;
+        }
+        
+        .lead-temp {
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .lead-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .lead-meta {
+            color: var(--muted);
+            font-size: 0.85rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lead-driver {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 163, 224, 0.2);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .lead-summary {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        
+        .lead-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .action-btn.primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        
+        .action-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-1px);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .status-new { background: rgba(0, 163, 224, 0.2); color: var(--accent); }
+        .status-contacted { background: rgba(245, 158, 11, 0.2); color: var(--warm); }
+        .status-qualified { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        
+        .score {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .score-high { color: var(--hot); }
+        .score-med { color: var(--warm); }
+        .score-low { color: var(--cold); }
+        
+        @media (max-width: 768px) {
+            .lead-card {
+                grid-template-columns: 1fr;
+            }
+            .lead-temp {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            <span class="logo">Data#3</span>
+            MXDR Lead Dashboard
+        </h1>
+        <div class="stats">
+            <div class="stat hot">
+                <div class="stat-value" id="hotCount">-</div>
+                <div class="stat-label">🔥 Hot</div>
+            </div>
+            <div class="stat warm">
+                <div class="stat-value" id="warmCount">-</div>
+                <div class="stat-label">⚡ Warm</div>
+            </div>
+            <div class="stat new">
+                <div class="stat-value" id="totalCount">-</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">All Leads</button>
+        <button class="filter-btn" data-filter="new">New</button>
+        <button class="filter-btn" data-filter="contacted">Contacted</button>
+        <button class="filter-btn" data-filter="hot">🔥 Hot Only</button>
+    </div>
+    
+    <div class="leads-grid" id="leadsGrid">
+        <div class="empty-state">
+            <p>Loading leads...</p>
+        </div>
+    </div>
+    
+    <script>
+        const SQL_API = 'https://atmanacademy.io/api/sql';
+        
+        async function fetchLeads() {
+            try {
+                const res = await fetch(SQL_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        sql: 'SELECT * FROM lead_dashboard' 
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success && data.results && data.results[0].rows) {
+                    const leads = data.results[0].rows;
+                    renderLeads(leads);
+                } else {
+                    console.error('Failed to fetch leads:', data.error);
+                    renderLeads(sampleLeads); // Fallback
+                }
+            } catch (e) {
+                console.error('Error fetching leads:', e);
+                renderLeads(sampleLeads); // Fallback
+            }
+        }
+
+        const sampleLeads = [
+            {
+                id: '1',
+                company_name: 'Acme Medical Clinic',
+                industry: 'Healthcare',
+                employee_count: '40',
+                contact_name: 'Dr. Sarah Chen',
+                contact_email: 'sarah@acmemedical.com.au',
+                qualification_score: 8,
+                recommended_solution: 'MXDR',
+                status: 'new',
+                lead_temperature: '🔥 Hot',
+                primary_driver: 'Compliance-driven',
+                chat_summary: 'Healthcare provider handling patient data. Third-party vendors asking about security posture. No current MDR solution.',
+                created_at: new Date().toISOString()
+            },
+            {
+                id: '2',
+                company_name: 'BuildRight Construction',
+                industry: 'Construction',
+                employee_count: '85',
+                contact_name: null,
+                contact_email: null,
+                qualification_score: 6,
+                recommended_solution: 'MXDR',
+                status: 'new',
+                lead_temperature: '⚡ Warm',
+                primary_driver: 'Security visibility',
+                chat_summary: 'Construction company with multiple sites. Had phishing incident last month. Looking for 24/7 monitoring.',
+                created_at: new Date(Date.now() - 86400000).toISOString()
+            }
+        ];
+        
+        function renderLeads(leads, filter = 'all') {
+            const grid = document.getElementById('leadsGrid');
+            
+            let filtered = leads;
+            if (filter === 'new') filtered = leads.filter(l => l.status === 'new');
+            if (filter === 'contacted') filtered = leads.filter(l => l.status === 'contacted');
+            if (filter === 'hot') filtered = leads.filter(l => l.qualification_score >= 8);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><p>No leads match this filter</p></div>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(lead => {
+                const scoreClass = lead.qualification_score >= 8 ? 'score-high' : 
+                                   lead.qualification_score >= 5 ? 'score-med' : 'score-low';
+                const temp = lead.lead_temperature.includes('Hot') ? '🔥' : 
+                            lead.lead_temperature.includes('Warm') ? '⚡' : '❄️';
+                
+                return `
+                    <div class="lead-card">
+                        <div class="lead-temp">${temp}</div>
+                        <div class="lead-info">
+                            <h3>${lead.company_name}</h3>
+                            <div class="lead-meta">
+                                <span>${lead.industry}</span>
+                                <span>${lead.employee_count} employees</span>
+                                <span class="score ${scoreClass}">Score: ${lead.qualification_score}/10</span>
+                                <span class="status-badge status-${lead.status}">${lead.status}</span>
+                            </div>
+                            <div class="lead-driver">${lead.primary_driver}</div>
+                            <p class="lead-summary">${lead.chat_summary}</p>
+                            ${lead.contact_email ? `<div style="margin-top: 0.5rem; font-size: 0.85rem;">📧 ${lead.contact_email}</div>` : ''}
+                        </div>
+                        <div class="lead-actions">
+                            <button class="action-btn primary" onclick="markContacted('${lead.id}')">Mark Contacted</button>
+                            <button class="action-btn secondary" onclick="viewDetails('${lead.id}')">View Details</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Update stats
+            document.getElementById('hotCount').textContent = leads.filter(l => l.qualification_score >= 8).length;
+            document.getElementById('warmCount').textContent = leads.filter(l => l.qualification_score >= 5 && l.qualification_score < 8).length;
+            document.getElementById('totalCount').textContent = leads.length;
+        }
+        
+        function markContacted(id) {
+            alert('TODO: Mark lead ' + id + ' as contacted');
+        }
+        
+        function viewDetails(id) {
+            alert('TODO: Show full details for lead ' + id);
+        }
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // Use currentLeads if available, else sample
+                renderLeads(window.currentLeads || sampleLeads, btn.dataset.filter);
+            });
+        });
+        
+        // Update renderLeads to save current leads globally
+        const originalRenderLeads = renderLeads;
+        renderLeads = function(leads, filter) {
+            window.currentLeads = leads;
+            originalRenderLeads(leads, filter);
+        };
+        
+        // Initial fetch
+        fetchLeads();
+    </script>
+</body>
+</html>
