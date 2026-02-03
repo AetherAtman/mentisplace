@@ -261,14 +261,211 @@
     <div id="blocks"></div>
     
     <script>
+        // NEW GROK IMAGINE VIDEO PROMPTS SECTION
+        const videoPrompts = [
+            {
+                id: 'grok-imagine-verified-growth-1',
+                title: '🎬 Grok Imagine: "The Verified Multiplier Effect"',
+                note: 'Waist-up Mentis with AR monocle - verified accounts multiply 1000%',
+                content: `Starting with waist-up shot of @adam_x_mentis in premium home office wearing distinctive AR monocle (single lens over right eye, tech-forward titanium frame, NOT cyclops or all-seeing eye), camera slowly pulls back revealing multiple holographic verified badges (blue checkmarks) orbiting around him like a growth vortex. AR monocle glows with data streams showing follower counts multiplying 10x - 100 → 1000 → 10,000. The monocle projects verified badge trajectories as tactical HUD elements showing "1000% FOLLOW-BACK RATE". Dynamic particle effects show "verified follow-back chain reaction" with glowing connection lines between badges. Cinematic lighting emphasizes AR monocle tech aesthetic, teal/orange color grade, shallow depth of field. 10-second duration, smooth camera movement, premium lens flare effects. Monocle remains clearly AR/tech accessory, not mystical or omniscient. Premium materials, titanium frame, clearly augmented reality tool.`,
+                tags: ['grok-imagine', 'video', 'verified', 'growth', 'ar-monocle']
+            },
+            {
+                id: 'grok-imagine-verified-train',
+                title: '🚂 Grok Imagine: "1000% Verified Follow Train"',
+                note: 'Mentis conducts verified follow train with AR monocle analytics',
+                content: `Waist-up Mentis profile shot wearing sleek AR monocle (modern tech device, single lens, clearly augmented reality tool), camera pulls back revealing he's conductor of verified follow train - AR monocle displays real-time follow-back metrics and train scheduling data as tactical overlay. Monocle projects holographic control interface for orchestrating the train made of interconnected verified badges. AR interface in monocle shows "1000% FOLLOW-BACK RATE" data directly in lens with growth trajectory analytics. Premium lens flares reflect off monocle surface, particle effects show verified status amplification. Smooth camera movement follows train path while keeping monocle as focal tech element. 10 seconds, cinematic quality. Monocle explicitly AR technology, not symbolic eye. Titanium frame with blue accent lighting, clearly functional AR technology rather than conceptual symbolism.`,
+                tags: ['grok-imagine', 'video', 'verified', 'train', 'ar-monocle', '1000percent']
+            },
+            {
+                id: 'grok-imagine-verified-network',
+                title: '🕸️ Grok Imagine: "The Verified Network Effect"',
+                note: 'Mentis at center of verified network with AR monocle analytics',
+                content: `Waist-up Mentis at center of massive 3D network web wearing premium AR monocle (tech-forward design, clearly single lens AR device, displays network node data and connection strength metrics), monocle projects network analytics showing real-time follow-back rates and connection quality scores. Network pulses and grows exponentially - each verified account connection triggers 10 more, with monocle displaying "VERIFIED NETWORK EFFECT: 1000% GROWTH" as tactical overlay. Depth of field keeps Mentis and monocle sharp while background shows network expansion. Monocle glows with connection data, shows verified account trust scores as AR elements. Camera orbits to reveal scale while maintaining monocle as tech centerpiece. 10-second premium cinematic quality. Monocle remains functional AR tool, not mystical symbol. Premium titanium construction with tech-blue accents.`,
+                tags: ['grok-imagine', 'video', 'verified', 'network', 'ar-monocle', 'growth']
+            },
+            {
+                id: 'grok-imagine-verified-amplification',
+                title: '🚀 Grok Imagine: "Verified Status Amplification"',
+                note: 'Mentis amplifies verified status with AR monocle metrics',
+                content: `Starting waist-up, Mentis on premium stage wearing distinctive AR monocle (modern tech device, clearly augmented reality, single lens design), monocle projects amplification metrics and verified account analytics as HUD overlay showing "VERIFIED AMPLIFICATION: 1000% GROWTH RATE". The stage transforms into launch pad where monocle displays amplification multipliers and verified account trajectory data as tactical readouts. AR interface in monocle shows real-time amplification effects with premium data visualization. Premium lens flares reflect off monocle surface, emphasizing tech aesthetic. Smooth camera movement reveals massive scale while keeping monocle as central tech element. "AMPLIFIED BY VERIFICATION" text appears through monocle AR projection. 10 seconds, cinematic quality. Monocle explicitly AR technology interface, not symbolic representation. Premium materials with tech-blue accent lighting.`,
+                tags: ['grok-imagine', 'video', 'verified', 'amplification', 'ar-monocle', 'premium']
+            },
+            {
+                id: 'grok-imagine-verified-algorithm',
+                title: '🧠 Grok Imagine: "The Verified Growth Algorithm"',
+                note: 'Mentis controls verified growth algorithm with AR monocle interface',
+                content: `Waist-up Mentis inside premium algorithm visualization wearing sleek AR monocle (tech device, clearly single lens AR tool, displays algorithm parameters and growth metrics), monocle projects algorithm data and follower growth analytics as tactical interface showing "VERIFIED GROWTH ALGORITHM: 1000% MULTIPLIER ACTIVE". Algorithm shows real-time follow-back rates with monocle displaying connection strength metrics as AR overlay. Premium holographic UI elements emanate from monocle, smooth data visualization animations showing exponential growth curves. Camera movement reveals algorithm scale while maintaining monocle as functional tech centerpiece. "VERIFIED GROWTH ALGORITHM" text projected through monocle AR display with live metrics. 10-second premium tech-cinematic quality. Monocle remains practical AR technology, not conceptual eye symbolism. Premium titanium construction with tech-blue accents and functional HUD elements.`,
+                tags: ['grok-imagine', 'video', 'verified', 'algorithm', 'ar-monocle', 'tech']
+            }
+        ];
+        
+        // Add video prompts to main batches array
+        batches.unshift(...videoPrompts);
+        
         // Batches - groups of related blocks pushed together
         const batches = [
+            {
+                id: 'mxdr-leads',
+                title: '🛡️ MXDR Lead Capture (D3 SMB)',
+                added: '2026-02-02T09:30:00Z',
+                color: 'cyan',
+                blocks: [
+                    {
+                        id: 'mxdr-schema',
+                        title: 'Create MXDR Tables',
+                        note: 'Lead capture for SMB MXDR qualifier chatbot - run in D3 Neon database',
+                        content: `-- MXDR Lead Capture Schema
+-- Run in your Neon database
+
+-- Qualified leads from the chat qualifier
+CREATE TABLE IF NOT EXISTS mxdr_leads (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at TIMESTAMP DEFAULT NOW(),
+    company_name VARCHAR(255),
+    industry VARCHAR(100),
+    employee_count VARCHAR(50),
+    contact_name VARCHAR(255),
+    contact_email VARCHAR(255),
+    contact_phone VARCHAR(50),
+    has_third_party_requirements BOOLEAN DEFAULT FALSE,
+    has_compliance_needs BOOLEAN DEFAULT FALSE,
+    has_current_security_provider BOOLEAN DEFAULT FALSE,
+    has_visibility_gaps BOOLEAN DEFAULT FALSE,
+    environment_type VARCHAR(50),
+    microsoft_license VARCHAR(50),
+    handles_sensitive_data BOOLEAN DEFAULT FALSE,
+    pain_points JSONB DEFAULT '[]',
+    recommended_solution VARCHAR(100),
+    recommended_addons JSONB DEFAULT '[]',
+    chat_summary TEXT,
+    qualification_score INTEGER DEFAULT 0,
+    status VARCHAR(50) DEFAULT 'new',
+    assigned_to VARCHAR(100),
+    notes TEXT,
+    last_contacted_at TIMESTAMP,
+    next_followup_at TIMESTAMP,
+    followup_count INTEGER DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_leads_status ON mxdr_leads(status);
+CREATE INDEX IF NOT EXISTS idx_leads_score ON mxdr_leads(qualification_score DESC);
+
+-- Chat sessions
+CREATE TABLE IF NOT EXISTS mxdr_chat_sessions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    lead_id UUID REFERENCES mxdr_leads(id),
+    started_at TIMESTAMP DEFAULT NOW(),
+    ended_at TIMESTAMP,
+    messages JSONB DEFAULT '[]',
+    reached_recommendation BOOLEAN DEFAULT FALSE,
+    clicked_cta BOOLEAN DEFAULT FALSE
+);
+
+-- Analytics events
+CREATE TABLE IF NOT EXISTS mxdr_events (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id UUID,
+    event_type VARCHAR(50),
+    event_data JSONB DEFAULT '{}',
+    created_at TIMESTAMP DEFAULT NOW()
+);`
+                    },
+                    {
+                        id: 'mxdr-dashboard-view',
+                        title: 'Lead Dashboard View (for Bharat)',
+                        note: 'Creates a view with lead temperature and primary driver for sales team',
+                        content: `-- Dashboard view for sales team
+CREATE OR REPLACE VIEW lead_dashboard AS
+SELECT 
+    l.id,
+    l.created_at,
+    l.company_name,
+    l.industry,
+    l.employee_count,
+    l.contact_name,
+    l.contact_email,
+    l.contact_phone,
+    l.qualification_score,
+    l.recommended_solution,
+    l.status,
+    l.assigned_to,
+    l.next_followup_at,
+    l.chat_summary,
+    CASE 
+        WHEN l.qualification_score >= 8 THEN '🔥 Hot'
+        WHEN l.qualification_score >= 5 THEN '⚡ Warm'
+        ELSE '❄️ Cold'
+    END as lead_temperature,
+    CASE
+        WHEN l.has_compliance_needs THEN 'Compliance-driven'
+        WHEN l.has_visibility_gaps THEN 'Security visibility'
+        WHEN l.has_third_party_requirements THEN 'Partner requirements'
+        ELSE 'General security'
+    END as primary_driver
+FROM mxdr_leads l
+ORDER BY l.qualification_score DESC, l.created_at DESC;
+
+-- Test the view
+SELECT * FROM lead_dashboard LIMIT 5;`
+                    },
+                    {
+                        id: 'mxdr-test-data',
+                        title: 'Insert Test Lead',
+                        note: 'Add a sample lead for testing the dashboard',
+                        content: `-- Insert test lead
+INSERT INTO mxdr_leads (
+    company_name, industry, employee_count, 
+    qualification_score, recommended_solution, 
+    has_compliance_needs, has_visibility_gaps,
+    chat_summary, status
+) VALUES (
+    'Acme Medical Clinic', 'Healthcare', '40',
+    8, 'MXDR',
+    true, true,
+    'Healthcare provider handling patient data. Third-party vendors asking about security posture. No current MDR solution. Needs compliance reporting for health regulations.',
+    'new'
+);
+
+-- Verify
+SELECT * FROM lead_dashboard;`
+                    }
+                ]
+            },
             {
                 id: 'ane-newsletter',
                 title: '📰 ANE Newsletter Schema',
                 added: '2026-01-30T11:30:00Z',
                 color: 'blue',
                 blocks: [
+                    {
+                        id: 'ane-calendar-updates',
+                        title: '🗓️ Calendar event updates (Feb 2026)',
+                        note: 'Add description, recurrence end date, and excluded_dates columns',
+                        content: `-- Add new columns to calendar_events
+-- Run these one at a time if needed
+
+-- 1. excluded_dates - for deleting individual occurrences
+ALTER TABLE calendar_events 
+ADD COLUMN IF NOT EXISTS excluded_dates TEXT[] DEFAULT '{}';
+
+-- 2. description fields - for event details on hover/click
+ALTER TABLE calendar_events 
+ADD COLUMN IF NOT EXISTS description TEXT;
+
+ALTER TABLE calendar_events 
+ADD COLUMN IF NOT EXISTS description_jp TEXT;
+
+-- 3. recurrence_end_date - to limit recurring events
+ALTER TABLE calendar_events 
+ADD COLUMN IF NOT EXISTS recurrence_end_date DATE;
+
+-- Verify all columns exist
+SELECT column_name, data_type, column_default 
+FROM information_schema.columns 
+WHERE table_name = 'calendar_events' 
+ORDER BY ordinal_position;`
+                    },
                     {
                         id: 'ane-schema',
                         title: 'Create ANE Tables',
@@ -543,7 +740,7 @@ GROUP BY image_name;`
             });
         }
         
-        const SQL_API = 'https://atmanacademy.vercel.app/api/sql';
+        const SQL_API = 'https://atmanacademy.io/api/sql';
         
         async function runBlock(id, btn) {
             // Find block in any batch
@@ -626,3 +823,47 @@ GROUP BY image_name;`
     </script>
 </body>
 </html>
+
+            // NEW GROK IMAGINE VIDEO PROMPTS - Verified Follow-Growth Series
+            {
+                id: 'grok-imagine-verified-growth-1',
+                title: '🎬 Grok Imagine: "The Verified Multiplier Effect"',
+                note: 'Waist-up Mentis with AR monocle - verified accounts multiply 1000%',
+                content: `Starting with waist-up shot of @adam_x_mentis in premium home office wearing distinctive AR monocle (single lens over right eye, tech-forward titanium frame, NOT cyclops or all-seeing eye), camera slowly pulls back revealing multiple holographic verified badges (blue checkmarks) orbiting around him like a growth vortex. AR monocle glows with data streams showing follower counts multiplying 10x - 100 → 1000 → 10,000. The monocle projects verified badge trajectories as tactical HUD elements showing "1000% FOLLOW-BACK RATE". Dynamic particle effects show "verified follow-back chain reaction" with glowing connection lines between badges. Cinematic lighting emphasizes AR monocle tech aesthetic, teal/orange color grade, shallow depth of field. 10-second duration, smooth camera movement, premium lens flare effects. Monocle remains clearly AR/tech accessory, not mystical or omniscient. Premium materials, titanium frame, clearly augmented reality tool.`,
+                tags: ['grok-imagine', 'video', 'verified', 'growth', 'ar-monocle']
+            },
+            {
+                id: 'grok-imagine-verified-train',
+                title: '🚂 Grok Imagine: "1000% Verified Follow Train"',
+                note: 'Mentis conducts verified follow train with AR monocle analytics',
+                content: `Waist-up Mentis profile shot wearing sleek AR monocle (modern tech device, single lens, clearly augmented reality tool), camera pulls back revealing he's conductor of verified follow train - AR monocle displays real-time follow-back metrics and train scheduling data as tactical overlay. Monocle projects holographic control interface for orchestrating the train made of interconnected verified badges. AR interface in monocle shows "1000% FOLLOW-BACK RATE" data directly in lens with growth trajectory analytics. Premium lens flares reflect off monocle surface, particle effects show verified status amplification. Smooth camera movement follows train path while keeping monocle as focal tech element. 10 seconds, cinematic quality. Monocle explicitly AR technology, not symbolic eye. Titanium frame with blue accent lighting, clearly functional AR technology rather than conceptual symbolism.`,
+                tags: ['grok-imagine', 'video', 'verified', 'train', 'ar-monocle', '1000percent']
+            },
+            {
+                id: 'grok-imagine-verified-network',
+                title: '🕸️ Grok Imagine: "The Verified Network Effect"',
+                note: 'Mentis at center of verified network with AR monocle analytics',
+                content: `Waist-up Mentis at center of massive 3D network web wearing premium AR monocle (tech-forward design, clearly single lens AR device, displays network node data and connection strength metrics), monocle projects network analytics showing real-time follow-back rates and connection quality scores. Network pulses and grows exponentially - each verified account connection triggers 10 more, with monocle displaying "VERIFIED NETWORK EFFECT: 1000% GROWTH" as tactical overlay. Depth of field keeps Mentis and monocle sharp while background shows network expansion. Monocle glows with connection data, shows verified account trust scores as AR elements. Camera orbits to reveal scale while maintaining monocle as tech centerpiece. 10-second premium cinematic quality. Monocle remains functional AR tool, not mystical symbol. Premium titanium construction with tech-blue accents.`,
+                tags: ['grok-imagine', 'video', 'verified', 'network', 'ar-monocle', 'growth']
+            },
+            {
+                id: 'grok-imagine-verified-amplification',
+                title: '🚀 Grok Imagine: "Verified Status Amplification"',
+                note: 'Mentis amplifies verified status with AR monocle metrics',
+                content: `Starting waist-up, Mentis on premium stage wearing distinctive AR monocle (modern tech device, clearly augmented reality, single lens design), monocle projects amplification metrics and verified account analytics as HUD overlay showing "VERIFIED AMPLIFICATION: 1000% GROWTH RATE". The stage transforms into launch pad where monocle displays amplification multipliers and verified account trajectory data as tactical readouts. AR interface in monocle shows real-time amplification effects with premium data visualization. Premium lens flares reflect off monocle surface, emphasizing tech aesthetic. Smooth camera movement reveals massive scale while keeping monocle as central tech element. "AMPLIFIED BY VERIFICATION" text appears through monocle AR projection. 10 seconds, cinematic quality. Monocle explicitly AR technology interface, not symbolic representation. Premium materials with tech-blue accent lighting.`,
+                tags: ['grok-imagine', 'video', 'verified', 'amplification', 'ar-monocle', 'premium']
+            },
+            {
+                id: 'grok-imagine-verified-algorithm',
+                title: '🧠 Grok Imagine: "The Verified Growth Algorithm"',
+                note: 'Mentis controls verified growth algorithm with AR monocle interface',
+                content: `Waist-up Mentis inside premium algorithm visualization wearing sleek AR monocle (tech device, clearly single lens AR tool, displays algorithm parameters and growth metrics), monocle projects algorithm data and follower growth analytics as tactical interface showing "VERIFIED GROWTH ALGORITHM: 1000% MULTIPLIER ACTIVE". Algorithm shows real-time follow-back rates with monocle displaying connection strength metrics as AR overlay. Premium holographic UI elements emanate from monocle, smooth data visualization animations showing exponential growth curves. Camera movement reveals algorithm scale while maintaining monocle as functional tech centerpiece. "VERIFIED GROWTH ALGORITHM" text projected through monocle AR display with live metrics. 10-second premium tech-cinematic quality. Monocle remains practical AR technology, not conceptual eye symbolism. Premium titanium construction with tech-blue accents and functional HUD elements.`,
+                tags: ['grok-imagine', 'video', 'verified', 'algorithm', 'ar-monocle', 'tech']
+            }
+        ];
+        
+        // Add new video prompts to batches array
+        batches.push(...videoPrompts);
+        
+        // Keep the existing renderBlocks() function
+        // ... (rest of the existing script remains unchanged)
